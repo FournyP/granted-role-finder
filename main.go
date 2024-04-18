@@ -57,39 +57,36 @@ func main() {
 
 	roleGrantedEthLogs, err := etherscanClient.GetLogs(int(fromBlock), int(toBlock), smartContractAddress, ROLE_GRANTED_TOPIC)
 	if err != nil {
-		log.Fatal("Unable to find logs :", err)
+		log.Fatal("Unable to find role granted logs :", err)
 	}
 
 	log.Println("Role granted logs:")
+	log.Println("-----------------------")
 
 	for _, ethLog := range roleGrantedEthLogs {
-		role := ethLog.Topics[1]
-		account := fmt.Sprintf("0x%s", ethLog.Topics[2][26:])
-		sender := fmt.Sprintf("0x%s", ethLog.Topics[3][26:])
-
-		log.Println("-----------------------")
-		log.Println("Role:", role)
-		log.Println("Account:", account)
-		log.Println("Sender:", sender)
-		log.Println("-----------------------")
+		printLog(ethLog)
 	}
 
 	roleRevokedEthLogs, err := etherscanClient.GetLogs(int(fromBlock), int(toBlock), smartContractAddress, ROLE_REVOKED_TOPIC)
 	if err != nil {
-		log.Fatal("Unable to find logs :", err)
+		log.Fatal("Unable to find role revoked logs :", err)
 	}
 
 	log.Println("Role revoked logs:")
+	log.Println("-----------------------")
 
 	for _, ethLog := range roleRevokedEthLogs {
-		role := ethLog.Topics[1]
-		account := fmt.Sprintf("0x%s", ethLog.Topics[2][26:])
-		sender := fmt.Sprintf("0x%s", ethLog.Topics[3][26:])
-
-		log.Println("-----------------------")
-		log.Println("Role:", role)
-		log.Println("Account:", account)
-		log.Println("Sender:", sender)
-		log.Println("-----------------------")
+		printLog(ethLog)
 	}
+}
+
+func printLog(ethLog etherscan.Log) {
+	role := ethLog.Topics[1]
+	account := fmt.Sprintf("0x%s", ethLog.Topics[2][26:])
+	sender := fmt.Sprintf("0x%s", ethLog.Topics[3][26:])
+
+	log.Println("Role:", role)
+	log.Println("Account:", account)
+	log.Println("Sender:", sender)
+	log.Println("-----------------------")
 }
